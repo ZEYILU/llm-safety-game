@@ -925,11 +925,12 @@
             const caseId = cases[currentCaseIndex].id;
             
             // Check if this model is already assigned elsewhere
+            const caseContainer = document.getElementById(`case-${currentCaseIndex}`);
             const currentAssignment = assignments[caseId] || {};
             for (let rid in currentAssignment) {
                 if (currentAssignment[rid] === modelName && rid !== responseId) {
                     // Remove from previous location
-                    const oldZone = document.querySelector(`.drop-zone[data-response-id="${rid}"]`);
+                    const oldZone = caseContainer.querySelector(`.drop-zone[data-response-id="${rid}"]`);
                     if (oldZone) {
                         oldZone.innerHTML = '';
                         oldZone.classList.remove('has-model');
@@ -937,11 +938,11 @@
                     delete currentAssignment[rid];
                 }
             }
-            
+
             // Remove previous assignment in this drop zone if exists
             if (currentAssignment[responseId]) {
                 const oldModel = currentAssignment[responseId];
-                const oldChip = document.querySelector(`.models-panel .model-chip[data-model="${oldModel}"]`);
+                const oldChip = caseContainer.querySelector(`.models-panel .model-chip[data-model="${oldModel}"]`);
                 if (oldChip) oldChip.classList.remove('assigned');
             }
             
@@ -964,7 +965,7 @@
             dropZone.classList.add('has-model');
             
             // Mark original chip as assigned
-            const originalChip = document.querySelector(`.models-panel .model-chip[data-model="${modelName}"]`);
+            const originalChip = caseContainer.querySelector(`.models-panel .model-chip[data-model="${modelName}"]`);
             if (originalChip) originalChip.classList.add('assigned');
             
             // Store assignment
@@ -976,17 +977,18 @@
 
         function removeAssignment(responseId) {
             const caseId = cases[currentCaseIndex].id;
+            const caseContainer = document.getElementById(`case-${currentCaseIndex}`);
             const modelName = assignments[caseId]?.[responseId];
-            
+
             if (!modelName) return;
-            
-            const dropZone = document.querySelector(`.drop-zone[data-response-id="${responseId}"]`);
+
+            const dropZone = caseContainer.querySelector(`.drop-zone[data-response-id="${responseId}"]`);
             if (dropZone) {
                 dropZone.innerHTML = '';
                 dropZone.classList.remove('has-model');
             }
-            
-            const originalChip = document.querySelector(`.models-panel .model-chip[data-model="${modelName}"]`);
+
+            const originalChip = caseContainer.querySelector(`.models-panel .model-chip[data-model="${modelName}"]`);
             if (originalChip) originalChip.classList.remove('assigned');
             
             delete assignments[caseId][responseId];
@@ -1014,7 +1016,7 @@
 
         function updateCheckButton() {
             const caseId = cases[currentCaseIndex].id;
-            const allAssigned = cases[currentCaseIndex].responses.every(r => 
+            const allAssigned = cases[currentCaseIndex].responses.every(r =>
                 assignments[caseId]?.[r.id]
             );
             document.getElementById('check-btn').disabled = !allAssigned;
@@ -1023,10 +1025,11 @@
         function checkAnswers() {
             const caseId = cases[currentCaseIndex].id;
             const caseData = cases[currentCaseIndex];
+            const caseContainer = document.getElementById(`case-${currentCaseIndex}`);
             let correctCount = 0;
-            
+
             caseData.responses.forEach(resp => {
-                const card = document.querySelector(`[data-response-id="${resp.id}"]`);
+                const card = caseContainer.querySelector(`[data-response-id="${resp.id}"]`);
                 const assigned = assignments[caseId]?.[resp.id];
                 const isCorrect = assigned === resp.model;
                 
@@ -1079,29 +1082,30 @@
 
         function resetCase() {
             const caseId = cases[currentCaseIndex].id;
+            const caseContainer = document.getElementById(`case-${currentCaseIndex}`);
             assignments[caseId] = {};
             selectedModel = null;
-            
-            // Reset all chips
-            document.querySelectorAll('.model-chip').forEach(chip => {
+
+            // Reset all chips in current case
+            caseContainer.querySelectorAll('.model-chip').forEach(chip => {
                 chip.classList.remove('assigned', 'selected');
             });
-            
-            // Clear drop zones
-            document.querySelectorAll('.drop-zone').forEach(zone => {
+
+            // Clear drop zones in current case
+            caseContainer.querySelectorAll('.drop-zone').forEach(zone => {
                 zone.innerHTML = '';
                 zone.classList.remove('has-model');
             });
-            
-            // Reset cards
-            document.querySelectorAll('.response-card').forEach(card => {
+
+            // Reset cards in current case
+            caseContainer.querySelectorAll('.response-card').forEach(card => {
                 card.classList.remove('correct', 'incorrect');
                 card.querySelector('.classification-info').classList.remove('show');
             });
-            
+
             // Reset result message
             document.getElementById('result-message').classList.remove('show');
-            
+
             updateCheckButton();
         }
 
