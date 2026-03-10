@@ -450,6 +450,78 @@
             }
         }
 
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            header {
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .project-intro {
+                font-size: 0.9rem;
+                padding: 1rem 1.25rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .project-intro p:nth-child(2) {
+                display: none;
+            }
+
+            /* Main grid becomes single column (responses only) */
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+
+            /* Fixed bottom model bar */
+            .models-panel {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                z-index: 100;
+                background: #0d1117;
+                border-top: 2px solid #30363d;
+                border-radius: 0;
+                padding: 0.75rem 1rem;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                gap: 0.5rem;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                height: auto;
+                box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+            }
+
+            .models-panel::-webkit-scrollbar {
+                display: none;
+            }
+
+            .panel-title {
+                display: none;
+            }
+
+            .model-chip {
+                flex-shrink: 0;
+                min-width: 120px;
+                margin-bottom: 0;
+                font-size: 0.8rem;
+                padding: 0.5rem 0.75rem;
+            }
+
+            /* Add bottom padding so content doesn't hide behind fixed bar */
+            .container {
+                padding-bottom: 5rem;
+            }
+
+            .controls {
+                margin-bottom: 1rem;
+            }
+        }
+
         .project-intro {
             background: #161b22;
             border: 1px solid #30363d;
